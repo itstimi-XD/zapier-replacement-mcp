@@ -23,9 +23,10 @@ This repo catalogs the recurring anti-patterns and aims to provide production-re
 **Cost.** Tasks consumed = sum of *every* branch's steps, even though only 1 branch executes per trigger.
 **Status.** Domain + use case landed; full template module coming.
 
-### 2. Cascading Sub-Zaps (planned)
+### 2. Cascading Sub-Zaps (in progress)
 **Symptom.** Zap A's webhook triggers Zap B, which triggers Zap C.
 **Cost.** Task multiplication — a single business event burns 3× the tasks it should.
+**Status.** Sequential pipeline domain + use case landed; full template module coming.
 
 ### 3. Polling Instead of Webhook (planned)
 **Symptom.** "Find New Row" / "Schedule" trigger checking every hour, regardless of whether data changed.

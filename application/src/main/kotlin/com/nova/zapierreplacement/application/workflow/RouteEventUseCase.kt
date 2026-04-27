@@ -45,8 +45,10 @@ class RouteEventUseCase(
                         dispatcher.dispatch(branch.targetChannel, message)
                     } catch (c: CancellationException) {
                         throw c
-                    } catch (t: Throwable) {
-                        DispatchResult.Failed(reason = t.message ?: "unknown")
+                    } catch (e: Exception) {
+                        // Catch Exception, not Throwable — Errors (OOM, StackOverflow,
+                        // LinkageError) must propagate so the JVM can surface them.
+                        DispatchResult.Failed(reason = e.message ?: "unknown")
                     }
                     branch to result
                 }
