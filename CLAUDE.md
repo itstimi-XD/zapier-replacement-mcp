@@ -93,6 +93,7 @@ zapier-replacement-mcp/
 6. **commit message 규칙**: `feat: ...` / `fix: ...` / `refactor: ...` / `docs: ...` / `test: ...`
 7. **특정 고객사 관련 어떤 것도 코드/문서/예제에 포함하지 마**. universal pattern으로 추상화.
 8. **MCP 표준이 사라질 가능성 대비** — domain/application은 MCP 모름. api 레이어만 MCP 알도록.
+9. **모든 비-trivial 작업은 리뷰 루프 적용** — 작업 → 리뷰(서브에이전트) → 수정 → 재리뷰 → blocker 해소될 때까지. 메모리 `feedback_review_loop_rule.md` 참조. (2026-04-27 확정)
 
 ---
 

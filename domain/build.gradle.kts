@@ -22,6 +22,9 @@ kotlin {
 dependencies {
     testImplementation(kotlin("test"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    // ArchUnit guards architectural rules at test time — second line of defense
+    // after Gradle module boundaries (which prevent wrong cross-module deps).
+    testImplementation("com.tngtech.archunit:archunit-junit5:1.3.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
