@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: zapier-replacement-mcp
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
