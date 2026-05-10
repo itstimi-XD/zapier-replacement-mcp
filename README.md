@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![MCP](https://img.shields.io/badge/MCP-spec--compatible-purple)](https://modelcontextprotocol.io)
 
-**Status:** pre-1.0. Anti-pattern catalog 5/6 shipped; first `@McpTool` template (`send_slack_message`) follows. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow.
+**Status:** pre-1.0. **Anti-pattern catalog complete (6/6)**; first `@McpTool` template (`send_slack_message`) follows. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow.
 
 **Maintained by Nova** — Seoul-based backend engineer.
 
@@ -46,9 +46,10 @@ This repo catalogs the recurring anti-patterns and aims to provide production-re
 **Cost.** Each invocation is a task, plus you hit the 1s/10s execution limit. Untestable, unshareable.
 **Domain.** `EventEnrichment` + `EnrichmentPipeline` — named pure transformations composed in order, zero per-run cost, zero timeout, full unit-test reach. Designed to compose inside the other patterns (e.g. enrich-then-route).
 
-### 6. Synchronous Webhook Chains · planned
+### 6. Synchronous Webhook Chains · ✅ shipped
 **Symptom.** External webhook → Zapier → external API → wait → respond to original sender.
-**Cost.** Every hop is a billable task; latency stacks.
+**Cost.** Every hop is a billable task; latency stacks; the original sender's connection is held open for the worst-case duration of every step.
+**Domain.** `AsyncRequest` + `AsyncRequestState` (sealed: Accepted → Running → Completed/Failed) + `AsyncRequestStateMachine` (pure transitions). Application: `AsyncRequestRegistryPort.compareAndUpdate(expected, new)` for atomic worker progress + `AcceptAsyncRequestUseCase` for HTTP-202-style fast acknowledgment.
 
 ---
 
