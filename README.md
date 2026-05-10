@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![MCP](https://img.shields.io/badge/MCP-spec--compatible-purple)](https://modelcontextprotocol.io)
 
-**Status:** pre-1.0. Anti-pattern catalog 4/6 shipped; first `@McpTool` template (`send_slack_message`) follows. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow.
+**Status:** pre-1.0. Anti-pattern catalog 5/6 shipped; first `@McpTool` template (`send_slack_message`) follows. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow.
 
 **Maintained by Nova** — Seoul-based backend engineer.
 
@@ -41,9 +41,10 @@ This repo catalogs the recurring anti-patterns and aims to provide production-re
 **Cost.** Pays for HubSpot / OpenAI / etc. on every event, then rejects 80%+ of them at the filter.
 **Domain.** `GuardedPipeline` (gate as a separate, mandatory field — type-level enforcement) + `ExecuteGuardedPipelineUseCase`.
 
-### 5. Code-by-Zapier Heavy Lifting · planned
+### 5. Code-by-Zapier Heavy Lifting · ✅ shipped
 **Symptom.** Python/JS step doing data transformation, lookups, or formatting on every run.
-**Cost.** Each invocation is a task, plus you hit the 1s/10s execution limit.
+**Cost.** Each invocation is a task, plus you hit the 1s/10s execution limit. Untestable, unshareable.
+**Domain.** `EventEnrichment` + `EnrichmentPipeline` — named pure transformations composed in order, zero per-run cost, zero timeout, full unit-test reach. Designed to compose inside the other patterns (e.g. enrich-then-route).
 
 ### 6. Synchronous Webhook Chains · planned
 **Symptom.** External webhook → Zapier → external API → wait → respond to original sender.
