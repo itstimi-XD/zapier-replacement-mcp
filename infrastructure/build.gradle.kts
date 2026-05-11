@@ -28,6 +28,11 @@ dependencyManagement {
 
 dependencies {
     implementation(project(":application"))
+    // :application uses `implementation` for :domain, which hides
+    // domain types from us by Gradle's transitive-dep rules. Adapters
+    // need to reference domain value types (e.g. WorkspaceId) at their
+    // signatures, so depend on :domain directly here.
+    implementation(project(":domain"))
 
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")

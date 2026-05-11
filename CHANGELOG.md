@@ -39,10 +39,30 @@ The dependency direction is `api → application → domain ← infrastructure`
 (strict). Tests live in `domain/src/test/.../DomainArchitectureTest.kt` and
 `application/.../ApplicationArchitectureTest.kt`.
 
+### Added (cont.)
+
+- **First MCP tool: `send_slack_message`**. The scaffold is now a runnable
+  MCP server you can wire into Claude Desktop / the MCP Inspector.
+  - `:domain` — `WorkspaceId` value class for tenant identity.
+  - `:application` — `SlackMessagePort` (sealed `SlackSendResult` outcomes),
+    `WorkspaceContextPort`, `SendSlackMessageUseCase` (input validation +
+    implicit workspace resolution).
+  - `:infrastructure` — `StaticWorkspaceContext` (single-tenant, reads
+    `twinface.workspace.id`), `StubSlackMessageAdapter` (placeholder until
+    the real Slack Web API integration lands), `SlackProperties` reserving
+    `twinface.slack.*` namespace.
+  - `:api` — `SendSlackMessageMcpTool` (Spring AI `@Tool` annotation),
+    `McpToolsConfiguration` (`MethodToolCallbackProvider` bean +
+    `mcpToolDispatcher` Coroutine dispatcher so the `runBlocking` bridge
+    does not pin Tomcat workers).
+  - Build — Spring AI BOM 1.0.0-M6 +
+    `spring-ai-mcp-server-webmvc-spring-boot-starter`, Spring milestone repo
+    added at root.
+
 ### Coming next
 
-- First `@McpTool` template (`send_slack_message`) — turns the scaffold into
-  a runnable MCP server you can wire into Claude Desktop.
 - The remaining six tools toward the v0.1 release (`send_email`, `send_sms`,
   `query_postgres`, `trigger_webhook`, `schedule_recurring_task`,
   `watch_email_inbox`).
+- Live Slack adapter replacing the stub (HTTP client + workspace-scoped
+  token lookup).

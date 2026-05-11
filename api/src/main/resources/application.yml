@@ -5,9 +5,27 @@ spring:
     hibernate:
       ddl-auto: validate
     open-in-view: false
+  ai:
+    mcp:
+      server:
+        name: twinface
+        version: 0.0.1-SNAPSHOT
+        # Default SSE endpoint is /sse and message endpoint is /mcp/message
+        # under the Spring Boot app's port. Override via
+        # spring.ai.mcp.server.sse-endpoint / sse-message-endpoint if
+        # an MCP client expects different paths.
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info
+
+# Single-tenant default for the self-hosted reference deployment.
+# Override via env TWINFACE_WORKSPACE_ID=... on a hosted instance.
+twinface:
+  workspace:
+    id: default
+  slack:
+    enabled: false
+    base-url: https://slack.com/api

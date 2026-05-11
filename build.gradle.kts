@@ -11,5 +11,9 @@ allprojects {
 
     repositories {
         mavenCentral()
+        // Spring AI 1.0.0-M6 is a milestone release; milestones are
+        // published to Spring's milestone repo, not Maven Central.
+        // Drop this once Spring AI ships a GA artifact to Central.
+        maven { url = uri("https://repo.spring.io/milestone") }
     }
 }
