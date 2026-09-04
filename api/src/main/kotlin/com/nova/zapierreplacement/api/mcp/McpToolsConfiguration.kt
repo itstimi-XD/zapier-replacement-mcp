@@ -41,7 +41,16 @@ class McpToolsConfiguration {
         slack = slack,
     )
 
-    @Bean(name = ["mcpToolDispatcher"])
+    // `destroyMethod = ""` is load-bearing. Spring's DisposableBeanAdapter
+    // infers a destroy method by convention and would call `close()` on this
+    // bean at shutdown. `Dispatchers.IO` is a shared JVM-wide dispatcher and
+    // its `close()` throws `IllegalStateException: Cannot be invoked on
+    // Dispatchers.IO`, which surfaced as a WARN on every application stop.
+    // Opting out of destruction is correct here: this bean does not own the
+    // dispatcher's lifecycle. If this is ever swapped for a dedicated
+    // executor-backed dispatcher, that one DOES need closing — drop this
+    // attribute at the same time.
+    @Bean(name = ["mcpToolDispatcher"], destroyMethod = "")
     fun mcpToolDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
     @Bean

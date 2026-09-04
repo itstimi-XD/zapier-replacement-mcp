@@ -5,7 +5,10 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![MCP](https://img.shields.io/badge/MCP-spec--compatible-purple)](https://modelcontextprotocol.io)
 
-**Status:** pre-1.0. **Anti-pattern catalog complete (6/6)** and **first MCP tool live** (`send_slack_message`, currently behind a stub Slack adapter). Six more tools land on the path to v0.1. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow.
+**Status:** pre-1.0. **Anti-pattern catalog complete (6/6)** and **first MCP tool live** (`send_slack_message`, currently behind a stub Slack adapter). Six more tools land on the path to v0.1.
+
+▶ **[QUICKSTART.md](QUICKSTART.md)** — running with an MCP client in about two minutes, no Slack credentials needed ([한국어](QUICKSTART.ko.md)).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow.
 
 **Maintained by Nova** — Seoul-based backend engineer.
 
