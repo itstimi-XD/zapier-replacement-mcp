@@ -1,6 +1,15 @@
 spring:
   application:
     name: zapier-replacement-mcp
+  # No Postgres adapter exists yet, so skip the database
+  # autoconfiguration that the data-jpa starter on the classpath would
+  # otherwise trigger (it fails boot with "Failed to configure a
+  # DataSource"). REMOVE this block when the first Postgres adapter
+  # (JPA entity / repository) lands, and configure spring.datasource.*.
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
   jpa:
     hibernate:
       ddl-auto: validate

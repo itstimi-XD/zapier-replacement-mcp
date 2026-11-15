@@ -10,6 +10,22 @@ ships its first tagged release.
 
 ## [Unreleased]
 
+### Fixed
+
+- `./gradlew :api:bootRun` no longer fails with "Failed to configure a DataSource".
+  `application.yml` now excludes `DataSourceAutoConfiguration` and
+  `HibernateJpaAutoConfiguration` until the first Postgres adapter lands. The context
+  test now boots the shipped config with no overrides.
+- `twinface.slack.enabled` is honored. The stub Slack adapter is registered only when
+  it is `false` or unset. `true` fails startup with an actionable Description/Action
+  message, because the live adapter has not shipped. Before this fix the stub answered
+  anyway.
+- `twinface.slack.token` (`TWINFACE_SLACK_TOKEN`) is now a bound property, reserved for
+  the live adapter, and is masked in `SlackProperties.toString()`.
+- `send_slack_message` no longer advertises `threadTs` as required in `tools/list`.
+- QUICKSTART (EN/KO) section 5 now describes what ships today. The literal bot-token example
+  was replaced with a placeholder.
+
 ### Added
 
 - **Anti-pattern catalog complete (6/6)**. The full v0.1 set of Zapier shapes

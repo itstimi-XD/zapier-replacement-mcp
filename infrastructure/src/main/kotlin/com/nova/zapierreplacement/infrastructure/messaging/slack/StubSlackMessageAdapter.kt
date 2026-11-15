@@ -4,9 +4,7 @@ import com.nova.zapierreplacement.application.ports.SlackMessagePort
 import com.nova.zapierreplacement.application.ports.SlackSendResult
 import com.nova.zapierreplacement.domain.workspace.WorkspaceId
 import org.slf4j.LoggerFactory
-import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.context.annotation.Configuration
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.stereotype.Component
 
 /**
@@ -20,11 +18,18 @@ import org.springframework.stereotype.Component
  * response — the contracts the next-pattern PR will exercise against
  * the live Slack Web API without changing any application code.
  *
- * Wiring: this adapter is registered unconditionally for now. When
- * the real adapter lands, swap selection to a Spring profile or a
- * config property; the application layer never has to change.
+ * Wiring: registered only while `twinface.slack.enabled` is `false` or
+ * unset. With `enabled=true` the stub steps aside and
+ * [SlackConfiguration] fails startup instead, so the stub can never
+ * report success for a message the operator expected to reach Slack.
  */
 @Component
+@ConditionalOnProperty(
+    prefix = "twinface.slack",
+    name = ["enabled"],
+    havingValue = "false",
+    matchIfMissing = true,
+)
 class StubSlackMessageAdapter : SlackMessagePort {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -48,22 +53,3 @@ class StubSlackMessageAdapter : SlackMessagePort {
         )
     }
 }
-
-/**
- * Reserved property namespace for the upcoming live adapter — keeping
- * the binding registered (even though the stub ignores it) makes the
- * eventual switch a one-line config flip rather than a code change.
- *
- * Bound as a plain `@ConfigurationProperties` class (no `@Configuration`)
- * per Spring Boot's recommended style since 2.2; activated via
- * [SlackPropertiesActivation] below.
- */
-@ConfigurationProperties(prefix = "twinface.slack")
-class SlackProperties {
-    var enabled: Boolean = false
-    var baseUrl: String = "https://slack.com/api"
-}
-
-@Configuration
-@EnableConfigurationProperties(SlackProperties::class)
-class SlackPropertiesActivation
