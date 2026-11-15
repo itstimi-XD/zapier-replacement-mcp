@@ -92,7 +92,7 @@ cd twinface
 Required:
 
 - JDK 21+
-- PostgreSQL 14+ (or Docker)
+- PostgreSQL 14+ (or Docker) once the first Postgres adapter lands. Not needed today: `./gradlew bootRun` and the tests start without a database.
 - Optional: Claude Desktop / Cursor / Cline configured to talk to MCP servers locally
 
 ## Code of conduct

@@ -3,15 +3,15 @@ package com.nova.zapierreplacement.api
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest(
-    properties = [
-        "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration",
-    ],
-)
+/**
+ * Boots the context with the shipped application.yml and no overrides,
+ * so this test fails whenever plain `./gradlew :api:bootRun` would
+ * (e.g. an autoconfiguration that needs a database nobody provides).
+ */
+@SpringBootTest
 class ZapierReplacementMcpApplicationTests {
 
     @Test
     fun contextLoads() {
-        // smoke test — JPA/DataSource autoconfig disabled to avoid needing a live Postgres for context boot.
     }
 }

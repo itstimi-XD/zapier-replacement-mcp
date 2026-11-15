@@ -57,9 +57,10 @@ class SendSlackMessageMcpTool(
         @ToolParam(description = "Message text. Supports Slack mrkdwn (bold, links, mentions).")
         text: String,
 
-        // Nullability handles required=false on its own; the annotation
-        // is here purely to attach the description for the MCP client.
-        @ToolParam(description = "Optional thread timestamp to reply inside a thread. Omit for a top-level message.")
+        // `required = false` is load-bearing: Spring AI 1.0.0-M6 does not
+        // read Kotlin nullability, so without it `tools/list` advertises
+        // threadTs as required (pinned by SendSlackMessageToolSchemaTest).
+        @ToolParam(required = false, description = "Optional thread timestamp to reply inside a thread. Omit for a top-level message.")
         threadTs: String? = null,
     ): McpResult = runBlocking(dispatcher) {
         val outcome = useCase.execute(channel = channel, text = text, threadTs = threadTs)

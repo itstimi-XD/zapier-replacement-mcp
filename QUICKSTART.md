@@ -11,7 +11,8 @@ whole path work before wiring anything real.
 ## Requirements
 
 - **JDK 21** (the Gradle toolchain will tell you if it disagrees)
-- Nothing else. The Gradle wrapper is committed.
+- Nothing else. The Gradle wrapper is committed, and no database is needed: no adapter
+  persists anything yet, so database autoconfiguration is switched off in `application.yml`.
 
 ---
 
@@ -116,26 +117,35 @@ case, and the response shape without credentials.
 
 ---
 
-## 5. Wire real Slack (optional)
+## 5. Real Slack: not shipped yet
+
+The live Slack adapter has not shipped. Only the stub described above exists today.
+
+The config switch is already there, and it fails loudly instead of quietly doing nothing:
 
 ```bash
 export TWINFACE_SLACK_ENABLED=true
-export TWINFACE_SLACK_TOKEN=xoxb-...      # bot token with chat:write
 ./gradlew :api:bootRun
+# APPLICATION FAILED TO START
+# (abridged)
+# Description: twinface.slack.enabled is not false, but the live Slack adapter is not implemented yet. ...
+# Action:      Set twinface.slack.enabled=false (env TWINFACE_SLACK_ENABLED=false) to run with the stub adapter.
 ```
 
-Or in `application.yml`:
+With `enabled: true` the stub steps aside and startup fails. If it did not, a stub that reports
+success would make you think messages were going out when nothing reached Slack.
+
+The token setting is bound, but nothing reads it until the live adapter lands:
 
 ```yaml
 twinface:
   slack:
-    enabled: true
+    enabled: false                 # true fails at startup until the live adapter ships
     base-url: https://slack.com/api
+    token: <your-bot-token>        # env TWINFACE_SLACK_TOKEN; reserved, currently unused
 ```
 
-> The live Slack adapter is the next thing on the path to v0.1. Until it lands,
-> `enabled: true` will fail fast rather than silently no-op — a stub that pretends to
-> succeed is worse than an error.
+The token is never logged.
 
 ---
 

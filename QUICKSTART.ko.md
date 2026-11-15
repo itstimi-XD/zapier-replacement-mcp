@@ -11,7 +11,8 @@ MCP 서버를 로컬에서 띄우고 MCP 클라이언트로 툴을 호출하기�
 ## 준비물
 
 - **JDK 21** (안 맞으면 Gradle 툴체인이 알려준다)
-- 그 외 없음. Gradle wrapper가 커밋돼 있다.
+- 그 외 없음. Gradle wrapper가 커밋돼 있고 데이터베이스도 필요 없다. 데이터를 저장하는 어댑터가 아직
+  없어서 `application.yml`에서 DB 자동 설정을 꺼 두었다.
 
 ---
 
@@ -116,25 +117,35 @@ MCP 클라이언트에서는 그냥 자연어로 시키면 된다:
 
 ---
 
-## 5. 실제 Slack 연결 (선택)
+## 5. 실제 Slack: 아직 없음
+
+실제 Slack 어댑터는 아직 들어가지 않았다. 지금 있는 건 위에서 설명한 스텁뿐이다.
+
+설정 스위치는 이미 있고, 켜면 조용히 넘어가지 않고 바로 실패한다.
 
 ```bash
 export TWINFACE_SLACK_ENABLED=true
-export TWINFACE_SLACK_TOKEN=xoxb-...      # chat:write 권한 봇 토큰
 ./gradlew :api:bootRun
+# APPLICATION FAILED TO START
+# (요약)
+# Description: twinface.slack.enabled is not false, but the live Slack adapter is not implemented yet. ...
+# Action:      Set twinface.slack.enabled=false (env TWINFACE_SLACK_ENABLED=false) to run with the stub adapter.
 ```
 
-또는 `application.yml`:
+`enabled: true`면 스텁이 빠지고 기동이 실패한다. 스텁이 계속 성공을 돌려주면 Slack에 아무것도
+안 갔는데 메시지가 나간 줄 알게 되기 때문이다.
+
+토큰 설정은 바인딩돼 있지만, 실제 어댑터가 들어오기 전까지 읽는 코드가 없다.
 
 ```yaml
 twinface:
   slack:
-    enabled: true
+    enabled: false                 # 실제 어댑터가 나오기 전까지 true면 기동 실패
     base-url: https://slack.com/api
+    token: <your-bot-token>        # env TWINFACE_SLACK_TOKEN; 예약만 됨, 아직 안 쓰임
 ```
 
-> 실 Slack 어댑터는 v0.1로 가는 다음 작업이다. 그전까지 `enabled: true`는 조용히 아무것도
-> 안 하는 대신 **즉시 실패**한다. 성공한 척하는 스텁은 에러보다 나쁘다.
+토큰은 로그에 찍히지 않는다.
 
 ---
 

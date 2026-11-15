@@ -48,6 +48,9 @@ dependencies {
     // 1.0.0-M6; the BOM still pins the version.
     implementation("org.springframework.ai:spring-ai-mcp-server-webmvc-spring-boot-starter")
 
+    // Tests build fake ports whose signatures use domain value types
+    // (WorkspaceId); :application hides :domain behind `implementation`.
+    testImplementation(project(":domain"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

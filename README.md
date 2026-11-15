@@ -72,7 +72,7 @@ infrastructure/ ← Twilio/Gmail/Slack/Postgres adapters
 - Kotlin 1.9 / Java 21
 - Spring Boot 3.5
 - Gradle KTS multi-module
-- PostgreSQL
+- PostgreSQL (planned; not required until the first persistence adapter lands)
 - Optional adapters: Twilio (SMS), SendGrid/Gmail (email), Slack SDK
 
 ---
@@ -88,7 +88,7 @@ These templates are designed to run on a single small VPS (Hetzner, Fly.io, Rail
 ```bash
 ./gradlew build           # all modules
 ./gradlew test            # all tests including ArchUnit
-./gradlew :api:bootRun    # run the API module locally on :8080
+./gradlew :api:bootRun    # run the API module locally on :8080 (no database needed yet)
 ```
 
 Requires JDK 21+. The Gradle toolchain auto-provisions if needed.
